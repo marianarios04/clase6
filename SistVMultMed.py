@@ -229,20 +229,18 @@ def main():
                 print("No se encontró una mascota con esa historia clínica.")
 
         elif menu == 6:
-            print("Usted ha salido del sistema de servicio de hospitalización...")
-            break
+            while True:
+                confirmacion = input("¿Está seguro que desea salir? (si/no): ").strip().lower()
+                if confirmacion == 'si':
+                    print("Usted ha salido del sistema de servicio de hospitalización...")
+                    return
+                elif confirmacion == 'no':
+                    print("Cancelando salida. Regresando al menú principal.")
+                    break
+                else:
+                    print("Entrada no válida. Por favor escriba 'si' o 'no'.")
 
-        else:
-            print("Usted ingresó una opción no válida. Inténtelo nuevamente...")
+
 
 if __name__=='__main__':
     main()
-
-
-
-
-
-            
-
-                
-
