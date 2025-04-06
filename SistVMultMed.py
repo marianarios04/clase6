@@ -119,7 +119,14 @@ def main():
 
             if not servicio_hospitalario.verificarExiste(historia):
                 nombre = input("Ingrese el nombre de la mascota: ")
-                tipo = input("Ingrese el tipo de mascota (felino o canino): ")
+
+                # Validación tipo
+                while True:
+                    tipo = input("Ingrese el tipo de mascota (felino o canino): ").strip().lower()
+                    if tipo in ["canino", "felino"]:
+                        break
+                    else:
+                        print("Tipo inválido. Debe ingresar 'canino' o 'felino'.")
 
                 try:
                     peso = int(input("Ingrese el peso de la mascota (en kg): "))
@@ -130,7 +137,14 @@ def main():
                     print("Debe ingresar un número válido para el peso.")
                     continue
 
-                fecha = input("Ingrese la fecha de ingreso (día/mes/año): ")
+                from datetime import datetime
+                while True:
+                    fecha = input("Ingrese la fecha de ingreso (día/mes/año): ")
+                    try:
+                        datetime.strptime(fecha, "%d/%m/%Y")
+                        break
+                    except ValueError:
+                        print("Formato de fecha inválido. Debe ser día/mes/año.")
 
                 try:
                     nm = int(input("Ingrese cantidad de medicamentos: "))
