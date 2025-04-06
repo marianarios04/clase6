@@ -156,21 +156,28 @@ def main():
                     continue
 
                 lista_med = []
+                nombres_medicamentos = set()
+
                 for i in range(nm):
-                    nombre_medicamento = input(f"Ingrese el nombre del medicamento #{i+1}: ")
-                    try:
-                        dosis = int(input(f"Ingrese la dosis del medicamento #{i+1}: "))
-                        if dosis <= 0:
-                            print("La dosis debe ser mayor a cero.")
-                            continue
-                    except ValueError:
-                        print("Debe ingresar un número válido para la dosis.")
-                        continue
+                    while True:
+                        nombre_medicamento = input(f"Ingrese el nombre del medicamento #{i+1}: ").strip().lower()
+                        if nombre_medicamento in nombres_medicamentos:
+                            print("Ese medicamento ya fue ingresado. Por favor ingrese uno diferente.")
+                        else:
+                            nombres_medicamentos.add(nombre_medicamento)
+                            break
+                    while True:
+                        try:
+                            dosis = int(input(f"Ingrese la dosis para {nombre_medicamento}: "))
+                            break
+                        except ValueError:
+                            print("Por favor, ingrese un número válido para la dosis.")
 
                     medicamento = Medicamento()
                     medicamento.asignarNombre(nombre_medicamento)
                     medicamento.asignarDosis(dosis)
                     lista_med.append(medicamento)
+
 
                 mas = Mascota()
                 mas.asignarNombre(nombre)
