@@ -1,3 +1,4 @@
+from datetime import datetime, date
 class Medicamento:
     def __init__(self):
         self.__nombre = "" 
@@ -31,8 +32,11 @@ class Mascota:
         return self.__tipo
     def verPeso(self):
         return self.__peso
+    def asignarFecha(self, f: date):
+        self.__fecha_ingreso = f
     def verFecha(self):
-        return self.__fecha_ingreso
+        return self.__fecha_ingreso.strftime("%d/%m/%Y")
+
     def verLista_Medicamentos(self):
         return self.__lista_medicamentos 
             
@@ -44,8 +48,6 @@ class Mascota:
         self.__tipo=t
     def asignarPeso(self,p):
         self.__peso=p
-    def asignarFecha(self,f):
-        self.__fecha_ingreso=f
     def asignarLista_Medicamentos(self,n):
         self.__lista_medicamentos = n
     def eliminarMedicamento(self, nombre_medicamento):
@@ -154,14 +156,13 @@ def main():
                     print("Debe ingresar un número válido para el peso.")
                     continue
 
-                from datetime import datetime
                 while True:
-                    fecha = input("Ingrese la fecha de ingreso (día/mes/año): ")
+                    fecha_input = input("Ingrese la fecha de ingreso (dd/mm/aaaa): ")
                     try:
-                        datetime.strptime(fecha, "%d/%m/%Y")
+                        fecha = datetime.strptime(fecha_input, "%d/%m/%Y").date()
                         break
                     except ValueError:
-                        print("Formato de fecha inválido. Debe ser día/mes/año.")
+                        print("Formato de fecha inválido. Intente nuevamente con el formato dd/mm/aaaa.")
 
                 try:
                     nm = int(input("Ingrese cantidad de medicamentos: "))
@@ -209,17 +210,19 @@ def main():
                 print("Ya existe una mascota con ese número de historia clínica.")
 
         elif menu == 2:  # Ver fecha de ingreso
-            try:
-                q = int(input("Ingrese la historia clínica de la mascota: "))
-            except ValueError:
-                print("Debe ingresar un número válido.")
-                continue
-
+            while True:
+                try:
+                    q = int(input("Ingrese la historia clínica de la mascota: "))
+                    break
+                except ValueError:
+                    print("Debe ingresar un número entero para la historia clínica.")
+            
             fecha = servicio_hospitalario.verFechaIngreso(q)
-            if fecha:
+            if fecha is not None:
                 print("La fecha de ingreso de la mascota es: " + fecha)
             else:
                 print("La historia clínica ingresada no corresponde con ninguna mascota en el sistema.")
+
 
         elif menu == 3:  # Ver número de mascotas
             numero = servicio_hospitalario.verNumeroMascotas()
