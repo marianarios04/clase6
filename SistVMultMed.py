@@ -47,7 +47,14 @@ class Mascota:
     def asignarFecha(self,f):
         self.__fecha_ingreso=f
     def asignarLista_Medicamentos(self,n):
-        self.__lista_medicamentos = n 
+        self.__lista_medicamentos = n
+    def eliminarMedicamento(self, nombre_medicamento):
+        for med in self.__lista_medicamentos:
+            if med.verNombre() == nombre_medicamento:
+                self.__lista_medicamentos.remove(med)
+                return True
+        return False
+
     
 class sistemaV:
     def __init__(self):
@@ -90,6 +97,11 @@ class sistemaV:
             del self.__felinos[historia]
             return True
         return False
+    def eliminarMedicamentoMascota(self, historia, nombre_medicamento):
+        mascota = self.__caninos.get(historia) or self.__felinos.get(historia)
+        if mascota:
+            return mascota.eliminarMedicamento(nombre_medicamento)
+        return None  # No se encontró la mascota
 
 
 def main():
@@ -104,7 +116,8 @@ def main():
             3- Ver número de mascotas en el servicio 
             4- Ver medicamentos que se están administrando
             5- Eliminar mascota 
-            6- Salir 
+            6- SALIR
+            7- Eliminar medicamento a una mascota
             La opción que usted desea escoger es: '''))
         except ValueError:
             print("Debe ingresar un número válido.")
@@ -250,8 +263,26 @@ def main():
                     break
                 else:
                     print("Entrada no válida. Por favor escriba 'si' o 'no'.")
+        elif menu == 7:
+            try:
+                historia = int(input("Ingrese la historia clínica de la mascota: "))
+            except ValueError:
+                print("Debe ingresar un número válido.")
+                continue
 
+            if not servicio_hospitalario.verificarExiste(historia):
+                print("La historia clínica ingresada no corresponde con ninguna mascota en el sistema.")
+                continue
 
+            nombre_medicamento = input("Ingrese el nombre del medicamento a eliminar: ").strip().lower()
+            resultado = servicio_hospitalario.eliminarMedicamentoMascota(historia, nombre_medicamento)
+
+            if resultado is True:
+                print(f"El medicamento '{nombre_medicamento}' ha sido eliminado.")
+            elif resultado is False:
+                print(f"El medicamento '{nombre_medicamento}' no se encontró en la lista de la mascota.")
+            else:
+                print("La mascota no está registrada en el sistema.")
 
 if __name__=='__main__':
     main()
